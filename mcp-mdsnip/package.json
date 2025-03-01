@@ -1,0 +1,24 @@
+{
+  "name": "mdsnip",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "mdsnip": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\""
+  },
+  "files": [
+    "build"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.5.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "typescript": "^5.7.3"
+  }
+}

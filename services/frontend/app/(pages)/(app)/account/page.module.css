@@ -1,0 +1,22 @@
+/* .input {
+  border-color: red;
+  border-width: 2px;
+} */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  margin-top: var(--space-l);
+  max-width: 500px;
+}
+
+.button {
+  width: fit-content;
+  padding-left: var(--space-l);
+  padding-right: var(--space-l);
+
+  &:hover {
+    background-color: rgb(233, 233, 233);
+  }
+}

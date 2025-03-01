@@ -1,0 +1,28 @@
+.htmlContainer {
+  margin: 0 auto;
+  width: 80%;
+  max-width: 800px;
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.htmlContainer p {
+  line-height: 1.5;
+}
+
+.headerContainer {
+  margin: 0 auto;
+  width: 80%;
+  max-width: 800px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.headerContainer p {
+  font-weight: bold;
+  color: rgb(108, 108, 108);
+  font-size: var(--font-size-l);
+  cursor: pointer;
+}

@@ -1,0 +1,12 @@
+@import "code.css";
+@import "table.css";
+@import "lists.css";
+
+blockquote {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  padding: 0 1em;
+  color: var(--font-color-2);
+  border-left: 0.25em solid var(--secondary-background-color);
+}

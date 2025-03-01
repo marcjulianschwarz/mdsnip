@@ -1,0 +1,37 @@
+.inputContainer > textarea {
+  height: 200px;
+  width: 100%;
+  font-size: var(--font-size-l);
+  padding: var(--space-m);
+  border-radius: var(--border-radius-s);
+  outline: none;
+  background-color: var(--primary-background-color-light);
+  border: var(--border-normal);
+  margin-top: 30px;
+
+  margin-bottom: var(--space-m);
+
+  &:focus {
+    border: var(--border-focused);
+  }
+
+  @media only screen and (min-width: 640px) {
+    height: 400px;
+  }
+}
+
+.shareButton {
+  border-radius: 500px;
+
+  &:active {
+    background-color: rgb(225, 225, 225);
+  }
+}
+
+.settingsContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-m);
+  gap: var(--space-n);
+  margin-bottom: var(--space-m);
+}

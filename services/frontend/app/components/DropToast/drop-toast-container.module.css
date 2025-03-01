@@ -1,0 +1,17 @@
+.container {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    top: initial;
+    bottom: 60px;
+  }
+}

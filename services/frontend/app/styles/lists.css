@@ -1,0 +1,70 @@
+/* Reset default margins and set consistent spacing */
+ul,
+ol,
+dl {
+  margin: 0 0 1.5rem 0;
+  padding: 0;
+}
+
+/* Unordered lists */
+ul {
+  padding-left: var(--space-l);
+}
+
+ul li {
+  position: relative;
+  padding: 0.3rem 0;
+}
+
+/* Ordered lists */
+ol {
+  counter-reset: item;
+  padding-left: var(--space-l);
+}
+
+ol li {
+  position: relative;
+  padding: 0.5rem 0;
+  counter-increment: item;
+}
+
+/* Nested lists */
+ul ul,
+ol ol,
+ul ol,
+ol ul {
+  margin: 0.5rem 0 0.5rem 1.5rem;
+}
+
+/* Definition lists */
+dl {
+  padding-left: var(--space-l);
+}
+
+dt {
+  font-weight: 600;
+  color: #1f2937; /* Dark gray */
+  margin-top: 1rem;
+}
+
+dd {
+  margin: 0.5rem 0 1rem 1rem;
+  color: #4b5563; /* Medium gray */
+}
+
+/* If lists are in a card or container */
+.card ul,
+.card ol {
+  padding-right: 1rem;
+}
+
+/* For description lists in a more compact format */
+.compact-dl dt {
+  float: left;
+  clear: left;
+  width: 120px;
+}
+
+.compact-dl dd {
+  margin-left: 140px;
+}

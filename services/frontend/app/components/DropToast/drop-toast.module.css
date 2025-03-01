@@ -1,0 +1,29 @@
+.toast {
+  width: fit-content;
+  background-color: var(--secondary-background-color);
+  padding: var(--space-n);
+  border-radius: var(--border-radius-n);
+  box-shadow: var(--shadow-high);
+  border: var(--border-normal);
+  pointer-events: auto;
+  transform: translateX(120%);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  backface-visibility: hidden;
+  overflow: hidden; /* Move overflow here */
+}
+
+.toast.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toastWarning {
+  background-color: var(--danger-background-color);
+}
+
+.toastSuccess {
+  background-color: var(--success-background-color);
+}

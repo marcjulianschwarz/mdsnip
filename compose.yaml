@@ -1,0 +1,32 @@
+services:
+  backend:
+    build:
+      context: ./services/backend
+      args:
+        FRONTEND_URL: ${FRONTEND_URL}
+    ports:
+      - "8030:3000"
+    environment:
+      - FRONTEND_URL=${FRONTEND_URL}
+      - NODE_ENV=${NODE_ENV}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+
+  frontend:
+    build:
+      context: ./services/frontend
+      args:
+        NEXT_PUBLIC_BACKEND_URL: ${BACKEND_URL}
+        NEXT_PUBLIC_FRONTEND_URL: ${FRONTEND_URL}
+    ports:
+      - "8031:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - NEXT_PUBLIC_BACKEND_URL=$BACKEND_URL
+      - NEXT_PUBLIC_FRONTEND_URL=$FRONTEND_URL
+
+include:
+  - ./services/postgres/compose.yaml
