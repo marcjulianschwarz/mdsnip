@@ -1,0 +1,68 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.07);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+/* Add this selector to prevent body scroll when modal is open */
+/* :global(body:has(.modalOverlay)) {
+  overflow: hidden;
+} */
+
+.modalContent {
+  background-color: var(--primary-background-color);
+  border-radius: var(--border-radius-n);
+  border: var(--border-normal);
+  width: 95%; /* Take up most of the screen width */
+  margin: 0 auto; /* Center the modal */
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  max-width: 90%;
+}
+
+@media only screen and (min-width: 640px) {
+  .modalContent {
+    max-width: 1000px;
+  }
+}
+
+.modalHeader {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+  outline: none;
+}
+
+.closeButton:hover {
+  color: var(--text-primary);
+}
+
+.modalBody {
+  padding: 24px;
+}

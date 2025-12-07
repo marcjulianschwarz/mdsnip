@@ -1,0 +1,12 @@
+.story {
+  padding: var(--space-n) var(--space-l);
+  /* border: var(--border-normal);
+  width: fit-content;
+  border-radius: var(--border-radius-n); */
+}
+
+.stories {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-n);
+}

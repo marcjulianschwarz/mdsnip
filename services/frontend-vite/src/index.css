@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@import "./styles/code.css";
+@import "./styles/globals.css";
+@import "./styles/lists.css";
+@import "./styles/markdown.css";
+@import "./styles/mdsnip.css";
+@import "./styles/table.css";
+
+:root {
+    font-size: 16px;
+    line-height: 1.5;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    padding: 0;
+}
