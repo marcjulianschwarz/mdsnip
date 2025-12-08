@@ -8,7 +8,7 @@ import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.i
 
 async function bootstrap() {
   let httpsOptions: HttpsOptions | undefined = undefined;
-  if (fs.existsSync('./cert')) {
+  if (fs.existsSync('./cert') && false) {
     httpsOptions = {
       key: fs.readFileSync('./cert/key.pem'),
       cert: fs.readFileSync('./cert/cert.pem'),
@@ -35,5 +35,7 @@ async function bootstrap() {
   app.use(cookieParser());
 
   await app.listen(configService.get('BACKEND_PORT') || 3000);
+  console.log('port', configService.get('BACKEND_PORT'));
+  console.log('frontend', configService.get('FRONTEND_URL'));
 }
 bootstrap();
