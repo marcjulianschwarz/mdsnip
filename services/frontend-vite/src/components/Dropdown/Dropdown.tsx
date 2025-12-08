@@ -1,5 +1,5 @@
 import styles from "./dropdown-container.module.css";
-import DropdownComponent, { DropDownItemType } from "./DropdownComponent";
+import DropdownComponent, { type DropDownItemType } from "./DropdownComponent";
 
 export interface DropdownProps {
   isOpen: boolean;

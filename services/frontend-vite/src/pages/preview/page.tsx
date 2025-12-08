@@ -1,12 +1,6 @@
-"use client";
-
-import DropdownComponent, {
-  DropDownItemType,
-} from "@/components/Dropdown/DropdownComponent";
+import DropdownComponent from "@/components/Dropdown/DropdownComponent";
 import styles from "./preview.module.css";
-import DropToastComponent, {
-  DropToastStyle,
-} from "@/components/DropToast/DropToastComponent";
+import DropToastComponent from "@/components/DropToast/DropToastComponent";
 import MarkdownComponent from "@/components/HTMLContent/MarkdownComponent";
 
 function Story({
@@ -31,14 +25,14 @@ export default function Page() {
         <DropToastComponent
           isOpen={true}
           text="Copied succesfully"
-          style={DropToastStyle.Success}
+          style={"success"}
         />
       </Story>
       <Story>
         <DropToastComponent
           isOpen={true}
           text="Copy failed"
-          style={DropToastStyle.Warning}
+          style={"warning"}
         />
       </Story>
       <Story>
@@ -59,11 +53,11 @@ export default function Page() {
             },
             {
               label: "Text Danger",
-              type: DropDownItemType.DESTROY,
+              type: "destroy",
             },
             {
               label: "Text Warning",
-              type: DropDownItemType.WARNING,
+              type: "warning",
             },
           ]}
         />

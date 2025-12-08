@@ -7,7 +7,6 @@ import { useDeleteSnippet } from "@/hooks/useDeleteSnippet";
 import { Modal } from "@/components/Modal/Modal";
 import { useUpdateSnippet } from "@/hooks/useUpdateSnippet";
 import { Dropdown } from "@/components/Dropdown/Dropdown";
-import { DropDownItemType } from "@/components/Dropdown/DropdownComponent";
 import { useNavigate } from "react-router";
 import { useDropToast } from "@/hooks/useDropToast";
 
@@ -197,7 +196,7 @@ export default function SnippetView({ snippet }: { snippet: Snippet }) {
               {
                 label: "Delete",
                 onClick: () => handleDelete(snippet),
-                type: DropDownItemType.DESTROY,
+                type: "destroy",
               },
             ]}
           />

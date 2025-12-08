@@ -9,10 +9,7 @@ export interface DropdownComponentProps {
   }[];
 }
 
-export enum DropDownItemType {
-  DESTROY,
-  WARNING,
-}
+export type DropDownItemType = "destroy" | "warning";
 
 export default function DropdownComponent(props: DropdownComponentProps) {
   const { items, setIsOpen } = props;
@@ -22,8 +19,8 @@ export default function DropdownComponent(props: DropdownComponentProps) {
         <div
           key={index}
           className={`${styles.item} ${
-            item.type == DropDownItemType.DESTROY ? styles.destroy : ""
-          } ${item.type == DropDownItemType.WARNING ? styles.warning : ""}`}
+            item.type == "destroy" ? styles.destroy : ""
+          } ${item.type == "warning" ? styles.warning : ""}`}
           onClick={async () => {
             await item.onClick?.();
             setIsOpen(false);
