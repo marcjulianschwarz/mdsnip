@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { DBService } from 'src/db.service';
 import { Snippet } from './snippets.entity';
+import { compare, hash } from 'bcrypt';
 
 @Injectable()
 export class SnippetsService {
@@ -21,6 +22,7 @@ export class SnippetsService {
     markdown: string,
     userId?: string,
     expirationHours?: number,
+    password?: string,
   ): Promise<Snippet> {
     const client = await this.dbService.pool.connect();
 
@@ -58,24 +60,28 @@ export class SnippetsService {
         ? new Date(createdAt.getTime() + expirationHours * 60 * 60 * 1000)
         : null;
 
+      const passwordHash = password ? await hash(password, 10) : null;
+
       const query = `
             INSERT INTO snippets (
-              markdown, 
-              share_code, 
+              markdown,
+              share_code,
               user_id,
               created_at,
               expires_at,
-              expiration_hours
-            ) 
-            VALUES ($1, $2, $3, $4, $5, $6) 
-            RETURNING 
-              id, 
-              markdown, 
-              share_code AS "shareCode", 
+              expiration_hours,
+              password_hash
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING
+              id,
+              markdown,
+              share_code AS "shareCode",
               created_at AS "createdAt",
               user_id AS "userId",
               expires_at AS "expiresAt",
-              expiration_hours AS "expirationHours"
+              expiration_hours AS "expirationHours",
+              password_hash AS "passwordHash"
           `;
 
       const result = await client.query<Snippet>(query, [
@@ -85,6 +91,7 @@ export class SnippetsService {
         createdAt,
         expiresAt,
         expirationHours || null,
+        passwordHash,
       ]);
       await client.query('COMMIT');
       return result.rows[0];
@@ -101,6 +108,7 @@ export class SnippetsService {
     data: {
       markdown?: string;
       expirationHours?: number | null;
+      password?: string | null;
     },
   ): Promise<Snippet> {
     const client = await this.dbService.pool.connect();
@@ -151,6 +159,16 @@ export class SnippetsService {
         valueCount++;
       }
 
+      if (data.password !== undefined) {
+        const newHash =
+          data.password === null || data.password === ''
+            ? null
+            : await hash(data.password, 10);
+        updates.push(`password_hash = $${valueCount}`);
+        values.push(newHash);
+        valueCount++;
+      }
+
       if (updates.length === 0) {
         throw new HttpException(
           'No valid fields provided for update',
@@ -192,6 +210,26 @@ export class SnippetsService {
     }
   }
 
+  async unlockSnippet(
+    shareCode: string,
+    password: string,
+  ): Promise<Snippet | 'invalid'> {
+    const snippet = await this.getSnippet(shareCode);
+    if (!snippet) return 'invalid';
+    if (!snippet.passwordHash) return snippet;
+    const ok = await compare(password, snippet.passwordHash);
+    if (!ok) return 'invalid';
+    return snippet;
+  }
+
+  async snippetExists(shareCode: string): Promise<boolean> {
+    const result = await this.dbService.pool.query<{ exists: boolean }>(
+      `SELECT EXISTS(SELECT 1 FROM snippets WHERE share_code = $1) AS exists`,
+      [shareCode],
+    );
+    return result.rows[0]?.exists ?? false;
+  }
+
   async getSnippet(shareCode: string) {
     const query = `SELECT
         id,
@@ -199,7 +237,8 @@ export class SnippetsService {
         share_code as "shareCode",
         created_at as "createdAt",
         expires_at as "expiresAt",
-        expiration_hours as "expirationHours"
+        expiration_hours as "expirationHours",
+        password_hash as "passwordHash"
       FROM snippets
       WHERE share_code = $1
       AND (expires_at IS NULL OR expires_at > NOW())`;
@@ -228,8 +267,9 @@ export class SnippetsService {
           user_id as "userId", 
           created_at as "createdAt",
           expires_at as "expiresAt",
-          expiration_hours as "expirationHours"
-        FROM snippets 
+          expiration_hours as "expirationHours",
+          (password_hash IS NOT NULL) as "hasPassword"
+        FROM snippets
         WHERE user_id = $1
         ORDER BY created_at DESC
     `;

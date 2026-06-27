@@ -63,8 +63,11 @@ export class DBService implements OnModuleInit, OnModuleDestroy {
       user_id UUID REFERENCES users(id),
       created_at TIMESTAMP WITH TIME ZONE,
       expires_at TIMESTAMP WITH TIME ZONE,
-      expiration_hours INTEGER
+      expiration_hours INTEGER,
+      password_hash TEXT
     );
+
+    ALTER TABLE snippets ADD COLUMN IF NOT EXISTS password_hash TEXT;
 
     CREATE TABLE IF NOT EXISTS user_preferences (
       user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,

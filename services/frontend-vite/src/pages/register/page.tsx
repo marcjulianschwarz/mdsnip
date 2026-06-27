@@ -31,50 +31,52 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="mdsnip-container">
-      <div className={styles.registerPage}>
-        <div className={styles.registerContainer}>
-          <div className={styles.titleContainer}>
-            <img
-              width={100}
-              height={100}
-              src={"/mdsnip.png"}
-              alt="mdsnip logo"
-            />
-            <h1 className={styles.title}>Create an account</h1>
-          </div>
-          <p className={styles.description}>
-            A mdsnip account allows you to better manage your created snippets.
-            Creating an account is not required to use this app.
-          </p>
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.formElement}>
-              <label>Username</label>
-              <input ref={usernameRef} required className="mdsnip-input" />
-            </div>
-            <div className={styles.formElement}>
-              <label>Password</label>
-              <input
-                type="password"
-                ref={passwordRef}
-                required
-                className="mdsnip-input"
-              />
-            </div>
-            <div className={styles.btnContainer}>
-              {userExists ? <p>Username already taken</p> : null}
-              <button type="submit" className="mdsnip-button">
-                Sign Up
-              </button>
-            </div>
-          </form>
-          <p className={styles.already}>
-            Already have an account?{" "}
-            <Link to={"/login"} className={styles.link}>
-              Sign In
-            </Link>
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <div className={styles.brand}>
+          <h1 className={styles.title}>Create an account</h1>
+          <p className={styles.subtitle}>
+            Manage your snippets. Account is optional.
           </p>
         </div>
+
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <label className={styles.field}>
+            <span className={styles.label}>Username</span>
+            <input
+              ref={usernameRef}
+              required
+              autoComplete="username"
+              className={styles.input}
+            />
+          </label>
+
+          <label className={styles.field}>
+            <span className={styles.label}>Password</span>
+            <input
+              type="password"
+              ref={passwordRef}
+              required
+              autoComplete="new-password"
+              className={styles.input}
+            />
+          </label>
+
+          {userExists && (
+            <p className={styles.error}>Username already taken.</p>
+          )}
+
+          <button type="submit" className={styles.submit}>
+            Sign up
+          </button>
+        </form>
+
+        <p className={styles.footer}>
+          Already have an account?{" "}
+          <Link to="/login" className={styles.link}>
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );

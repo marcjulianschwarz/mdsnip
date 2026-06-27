@@ -10,6 +10,9 @@ import LoginPage from "./pages/login/page";
 import RegisterPage from "./pages/register/page";
 import AccountPage from "./pages/account/page";
 import SharePage from "./pages/share/page";
+import ImpressumPage from "./pages/privacy/impressum/page";
+import DataPrivacyPage from "./pages/privacy/data/page";
+import Footer from "./components/Footer/Footer";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -23,7 +26,10 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/account" element={<AccountPage />} />
           <Route path="/share/:shareId" element={<SharePage />} />
+          <Route path="/privacy/impressum" element={<ImpressumPage />} />
+          <Route path="/privacy/data" element={<DataPrivacyPage />} />
         </Routes>
+        <Footer />
       </QueryProvider>
     </BrowserRouter>
   </StrictMode>,

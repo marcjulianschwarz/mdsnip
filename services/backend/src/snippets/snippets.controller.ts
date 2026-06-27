@@ -3,9 +3,11 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { SnippetsService } from './snippets.service';
@@ -13,11 +15,17 @@ import { ApiBody } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Snippet } from './snippets.entity';
 
+type PublicSnippet = Omit<Snippet, 'passwordHash'>;
+
 type ByShareCodeRespone =
-  | {
-      expired: true;
-    }
-  | { expired: false; snippet: Snippet };
+  | { expired: true }
+  | { protected: true }
+  | { expired: false; snippet: PublicSnippet };
+
+function stripPassword(snippet: Snippet): PublicSnippet {
+  const { passwordHash: _ph, ...rest } = snippet;
+  return rest;
+}
 
 @Controller('snippets')
 export class SnippetsController {
@@ -29,19 +37,22 @@ export class SnippetsController {
     },
   })
   @Post('')
-  setMarkdownData(
+  async setMarkdownData(
     @Body()
     body: {
       markdown: string;
       userId?: string;
       expirationHours?: number;
+      password?: string;
     },
-  ) {
-    return this.snippetsService.createSnippet(
+  ): Promise<PublicSnippet> {
+    const snippet = await this.snippetsService.createSnippet(
       body.markdown,
       body.userId,
       body.expirationHours,
+      body.password,
     );
+    return stripPassword(snippet);
   }
 
   @Get('by-share-code/:shareCode')
@@ -50,9 +61,31 @@ export class SnippetsController {
   ): Promise<ByShareCodeRespone> {
     const snippet = await this.snippetsService.getSnippet(shareCode);
     if (snippet) {
-      return { snippet: snippet, expired: false };
+      if (snippet.passwordHash) {
+        return { protected: true };
+      }
+      return { snippet: stripPassword(snippet), expired: false };
+    }
+    const exists = await this.snippetsService.snippetExists(shareCode);
+    if (!exists) {
+      throw new NotFoundException('Snippet not found');
     }
     return { expired: true };
+  }
+
+  @Post('by-share-code/:shareCode/unlock')
+  async unlockSnippet(
+    @Param('shareCode') shareCode: string,
+    @Body() body: { password: string },
+  ): Promise<{ snippet: PublicSnippet }> {
+    const result = await this.snippetsService.unlockSnippet(
+      shareCode,
+      body.password ?? '',
+    );
+    if (result === 'invalid') {
+      throw new UnauthorizedException('Invalid password');
+    }
+    return { snippet: stripPassword(result) };
   }
 
   @UseGuards(AuthGuard)
@@ -73,7 +106,12 @@ export class SnippetsController {
   @Patch(':snippetId')
   updateSnippet(
     @Param('snippetId') snippetId: string,
-    @Body() body: { markdown?: string; expirationHours?: number | null },
+    @Body()
+    body: {
+      markdown?: string;
+      expirationHours?: number | null;
+      password?: string | null;
+    },
   ) {
     const data = this.snippetsService.updateSnippet(snippetId, body);
     return data;

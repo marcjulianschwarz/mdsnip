@@ -5,10 +5,19 @@ interface ModalProps {
   isOpen: boolean;
   onClose?: () => void;
   title?: string;
+  size?: "sm" | "default";
+  shake?: boolean;
   children: React.ReactNode;
 }
 
-export function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export function Modal({
+  isOpen,
+  onClose,
+  title,
+  size = "default",
+  shake = false,
+  children,
+}: ModalProps) {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Escape") {
       onClose?.();
@@ -27,7 +36,10 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
       aria-labelledby={title ? "modal-title" : undefined}
       tabIndex={-1}
     >
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={`${styles.modalContent} ${size === "sm" ? styles.modalContentSm : ""} ${shake ? styles.modalShake : ""}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         {title && (
           <div className={styles.modalHeader}>
             <h2 id="modal-title" className={styles.modalTitle}>

@@ -5,6 +5,7 @@ interface UpdateSnippetData {
   id: string;
   markdown?: string;
   expirationHours?: number;
+  password?: string | null;
 }
 
 interface UpdateSnippetOptions {
@@ -49,6 +50,7 @@ export function useUpdateSnippet(options: UpdateSnippetOptions = {}) {
     onSuccess: () => {
       onSuccess?.();
       queryClient.invalidateQueries({ queryKey: ["snippets"] });
+      queryClient.invalidateQueries({ queryKey: ["markdown"] });
     },
   });
 }

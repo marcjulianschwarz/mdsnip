@@ -1,11 +1,11 @@
-.sidebarContainer {
+.appContainer {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
 }
 
-@media only screen and (min-width: 640px) {
-  .sidebarContainer {
-    flex-direction: row;
-    min-height: 100vh;
-  }
+.main {
+  flex: 1;
+  width: 100%;
 }

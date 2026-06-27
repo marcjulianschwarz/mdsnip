@@ -1,8 +1,6 @@
 blockquote {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    padding: 0 1em;
+    margin: var(--space-m) 0 var(--space-m) var(--space-m);
+    padding: 0 var(--space-m);
     color: var(--font-color-2);
-    border-left: 0.25em solid var(--secondary-background-color);
+    border-left: 3px solid var(--border-color-2);
 }

@@ -1,51 +1,152 @@
+.page {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: calc(var(--space-xl) * 2) var(--space-m) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--font-color-2);
+  font-size: var(--font-size-s);
+}
+
+.empty {
+  color: var(--font-color-2);
+  text-align: center;
+}
+
 .settings {
   display: flex;
   flex-direction: column;
-  gap: var(--space-m);
-  margin-top: var(--space-l);
+  border: var(--border-normal);
+  border-radius: var(--border-radius-n);
+  background-color: var(--primary-background-color-light);
+  overflow: hidden;
 }
 
 .setting {
   display: flex;
   align-items: center;
   gap: var(--space-m);
+  padding: var(--space-m);
   border-bottom: var(--border-normal);
-  padding-bottom: var(--space-m);
+}
+
+.setting:last-child {
+  border-bottom: none;
 }
 
 .settingLabel {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: var(--space-s);
+  gap: 2px;
+  min-width: 0;
 }
 
 .settingTitle {
-  font-size: var(--font-size-l);
+  font-size: var(--font-size-m);
+  font-weight: 500;
+  color: var(--font-color-1);
 }
 
 .settingDescription {
   color: var(--font-color-2);
   font-size: var(--font-size-s);
+  line-height: 1.45;
 }
 
-.settingValue {
-  flex: 1 1 auto;
-  min-width: 125px;
-  max-width: 250px;
-  height: fit-content;
+.dropdown,
+.input {
+  flex: 0 0 180px;
+  padding: 6px var(--space-n);
+  font-size: var(--font-size-s);
+  font-family: inherit;
+  color: var(--font-color-1);
+  background-color: var(--primary-background-color);
+  border: var(--border-normal);
+  border-radius: var(--border-radius-s);
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 }
 
 .dropdown {
-  border: none;
-  outline: none;
   appearance: none;
-  background-color: var(--primary-background-color-light);
-  padding: var(--space-n) var(--space-m);
-  border: var(--border-normal);
-  font-size: var(--font-size-m);
   cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000' opacity='0.9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' %3E%3Cpath d='m7 15 5 5 5-5'/%3E%3Cpath d='m7 9 5-5 5 5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat, repeat;
-  background-position: right 0.5em top 50%, 0 0;
+  padding-right: calc(var(--space-l) + var(--space-xs));
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' opacity='0.6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' %3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.55em top 50%;
+}
+
+.dropdown:hover,
+.input:hover {
+  border-color: var(--border-color-2);
+}
+
+.dropdown:focus,
+.dropdown:focus-visible,
+.input:focus,
+.input:focus-visible {
+  border-color: var(--highlight-color);
+  box-shadow: var(--focus-ring);
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.saveButton {
+  padding: 0.5rem 1.5rem;
+  font-size: var(--font-size-s);
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--font-color-1);
+  background-color: var(--primary-background-color-light);
+  border: var(--border-normal);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.saveButton:hover {
+  background-color: var(--secondary-background-color);
+  border-color: var(--border-color-2);
+}
+
+.saveButton:focus-visible {
+  border-color: var(--highlight-color);
+  box-shadow: var(--focus-ring);
+}
+
+@media (max-width: 520px) {
+  .setting {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .dropdown,
+  .input {
+    flex: 1 1 auto;
+    width: 100%;
+  }
 }

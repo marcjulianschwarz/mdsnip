@@ -6,6 +6,10 @@ services:
         FRONTEND_URL: ${FRONTEND_URL}
     ports:
       - "8030:3000"
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       - FRONTEND_URL=${FRONTEND_URL}
       - NODE_ENV=${NODE_ENV}

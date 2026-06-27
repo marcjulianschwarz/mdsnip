@@ -1,6 +1,6 @@
 import markdownToHTML from "@/services/markdown";
 import "@/styles/markdown.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function MarkdownComponent({
   markdown,
@@ -11,10 +11,18 @@ export default function MarkdownComponent({
 }) {
   const [html, setHtml] = useState<string>("");
 
-  markdownToHTML(markdown).then((html) => {
-    setHtml(html);
-    htmlGenerated?.(html);
-  });
+  useEffect(() => {
+    let cancelled = false;
+    markdownToHTML(markdown).then((next) => {
+      if (cancelled) return;
+      setHtml(next);
+      htmlGenerated?.(next);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [markdown, htmlGenerated]);
+
   return (
     <div>
       <div dangerouslySetInnerHTML={{ __html: html }} />

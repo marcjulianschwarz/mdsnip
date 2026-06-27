@@ -6,4 +6,6 @@ export interface Snippet {
   expiresAt?: Date;
   expirationHours?: number;
   shareCode: string;
+  passwordHash?: string | null;
+  hasPassword?: boolean;
 }

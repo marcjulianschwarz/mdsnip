@@ -10,6 +10,7 @@ interface CreateSnippetInput {
   markdown: string;
   userId?: string;
   expirationHours?: number;
+  password?: string;
 }
 
 export function useCreateSnippet(options: CreateSnippetOptions = {}) {
@@ -22,6 +23,7 @@ export function useCreateSnippet(options: CreateSnippetOptions = {}) {
         input.markdown,
         input.userId,
         input.expirationHours,
+        input.password,
       );
 
       if (!snippet) {

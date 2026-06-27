@@ -1,31 +1,28 @@
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.07);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.18);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: overlayIn var(--duration-base) var(--ease-out);
 }
-/* Add this selector to prevent body scroll when modal is open */
-/* :global(body:has(.modalOverlay)) {
-  overflow: hidden;
-} */
 
 .modalContent {
   background-color: var(--primary-background-color);
   border-radius: var(--border-radius-n);
   border: var(--border-normal);
-  width: 95%; /* Take up most of the screen width */
-  margin: 0 auto; /* Center the modal */
+  box-shadow: var(--shadow-high);
+  width: 95%;
+  margin: 0 auto;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
   max-width: 90%;
+  animation: modalIn var(--duration-base) var(--ease-out);
 }
 
 @media only screen and (min-width: 640px) {
@@ -34,9 +31,34 @@
   }
 }
 
+.modalContentSm {
+  width: auto;
+  max-width: 360px;
+}
+
+.modalShake {
+  animation:
+    modalIn var(--duration-base) var(--ease-out),
+    modalShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes modalShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-6px); }
+  40%, 60% { transform: translateX(6px); }
+}
+
+@media only screen and (min-width: 640px) {
+  .modalContentSm {
+    max-width: 320px;
+  }
+}
+
 .modalHeader {
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--border);
+  padding: var(--space-m) var(--space-l);
+  border-bottom: var(--border-normal);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -44,25 +66,45 @@
 
 .modalTitle {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .closeButton {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
   cursor: pointer;
-  padding: 4px 8px;
-  color: var(--text-secondary);
-  transition: color 0.2s;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--font-color-2);
+  transition: color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
   outline: none;
+  border-radius: var(--border-radius-s);
 }
 
 .closeButton:hover {
-  color: var(--text-primary);
+  color: var(--font-color-1);
+  background-color: var(--secondary-background-color);
 }
 
 .modalBody {
-  padding: 24px;
+  padding: var(--space-l);
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }

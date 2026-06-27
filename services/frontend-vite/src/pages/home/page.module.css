@@ -1,37 +1,174 @@
-.inputContainer > textarea {
-  height: 200px;
+.page {
   width: 100%;
-  font-size: var(--font-size-l);
+  max-width: 760px;
+  margin: 0 auto;
+  padding: calc(var(--space-xl) * 2) var(--space-m) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.composer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.input {
+  width: 100%;
+  min-height: 240px;
   padding: var(--space-m);
-  border-radius: var(--border-radius-s);
-  outline: none;
+  font-size: var(--font-size-m);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+  color: var(--font-color-1);
   background-color: var(--primary-background-color-light);
   border: var(--border-normal);
-  margin-top: 30px;
+  border-radius: var(--border-radius-n);
+  outline: none;
+  resize: vertical;
+  transition: border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 
-  margin-bottom: var(--space-m);
+  &::placeholder {
+    color: var(--font-color-2);
+  }
 
-  &:focus {
-    border: var(--border-focused);
+  &:hover {
+    border-color: var(--border-color-2);
+  }
+
+  &:focus,
+  &:focus-visible {
+    border-color: var(--highlight-color);
+    box-shadow: var(--focus-ring);
   }
 
   @media only screen and (min-width: 640px) {
-    height: 400px;
+    min-height: 340px;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-s);
+  position: relative;
+}
+
+.settingsWrap {
+  position: relative;
+}
+
+.iconButton {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: var(--border-normal);
+  border-radius: 999px;
+  color: var(--font-color-2);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+
+  &:hover {
+    background-color: var(--secondary-background-color);
+    color: var(--font-color-1);
+    border-color: var(--border-color-2);
+  }
+
+  &[aria-expanded="true"] {
+    background-color: var(--secondary-background-color);
+    color: var(--font-color-1);
+  }
+}
+
+.settingsPopover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 50;
+  min-width: 220px;
+  padding: var(--space-n);
+  background-color: var(--primary-background-color-light);
+  border: var(--border-normal);
+  border-radius: var(--border-radius-n);
+  box-shadow: var(--shadow-high);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  animation: popIn var(--duration-fast) var(--ease-out);
+}
+
+.popoverLabel {
+  font-size: var(--font-size-s);
+  color: var(--font-color-2);
+}
+
+.popoverInput {
+  padding: 6px var(--space-s);
+  font-size: var(--font-size-s);
+  font-family: inherit;
+  color: var(--font-color-1);
+  background-color: var(--primary-background-color);
+  border: var(--border-normal);
+  border-radius: var(--border-radius-s);
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+
+  &:focus,
+  &:focus-visible {
+    border-color: var(--highlight-color);
+    box-shadow: var(--focus-ring);
   }
 }
 
 .shareButton {
-  border-radius: 500px;
+  padding: 0.5rem 1.5rem;
+  font-size: var(--font-size-m);
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--font-color-1);
+  background-color: var(--primary-background-color-light);
+  border: var(--border-normal);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
 
-  &:active {
-    background-color: rgb(225, 225, 225);
+  &:hover:not(:disabled) {
+    background-color: var(--secondary-background-color);
+    border-color: var(--border-color-2);
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--hover-state-background-color);
+  }
+
+  &:focus-visible {
+    border-color: var(--highlight-color);
+    box-shadow: var(--focus-ring);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
   }
 }
 
-.settingsContainer {
-  display: flex;
-  flex-direction: column;
-  margin-top: var(--space-m);
-  gap: var(--space-n);
-  margin-bottom: var(--space-m);
+.snippetsSection {
+  width: 100%;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }

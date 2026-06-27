@@ -41,7 +41,7 @@ function AuthenticatedSettingsPage({
         }),
       ]);
 
-      showDropToast("Settings saved successfully", "savesett", 2000, "success");
+      showDropToast("Settings saved", "savesett", 2000, "success");
     } catch {
       showDropToast("Failed to save settings", "errorsett", 2000, "warning");
     }
@@ -52,50 +52,53 @@ function AuthenticatedSettingsPage({
   };
 
   const handleExpirationTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDefaultExpirationTime(parseInt(e.target.value));
+    const v = e.target.value;
+    setDefaultExpirationTime(v ? parseInt(v) : null);
   };
 
   return (
-    <div className="mdsnip-container">
-      <h1>Settings</h1>
+    <div className={styles.page}>
       <div className={styles.settings}>
         <div className={styles.setting}>
           <div className={styles.settingLabel}>
-            <p className={styles.settingTitle}>Default Share Action</p>
+            <p className={styles.settingTitle}>Default share action</p>
             <p className={styles.settingDescription}>
-              This aciton is performed when you press the Share button.
+              Performed when you press the Share button.
             </p>
           </div>
           <select
-            className={`${styles.dropdown} ${styles.settingValue}`}
+            className={styles.dropdown}
             value={defaultShareAction}
-            onChange={(e) => handleShareActionChange(e)}
+            onChange={handleShareActionChange}
           >
-            <option value={"view"}>View</option>
-            <option value={"snippets"}>Snippets</option>
+            <option value="view">Open shared view</option>
+            <option value="snippets">Stay on snippets</option>
           </select>
         </div>
 
         <div className={styles.setting}>
           <div className={styles.settingLabel}>
-            <p className={styles.settingTitle}>Default Expiration Time</p>
+            <p className={styles.settingTitle}>Default expiration time</p>
             <p className={styles.settingDescription}>
-              This will prefill the expiration time with the set amount of
-              hours. Keep empty for indefinite expiration.
+              Prefilled hours value for new snippets. Leave empty for no
+              expiration.
             </p>
           </div>
           <input
-            className={`mdsnip-input ${styles.settingValue}`}
+            className={styles.input}
             placeholder="24"
-            value={defaultExpirationTime || ""}
+            inputMode="numeric"
+            value={defaultExpirationTime ?? ""}
             onChange={handleExpirationTimeChange}
-          ></input>
+          />
         </div>
       </div>
-      <br />
-      <button onClick={handleSave} className="mdsnip-button">
-        Save
-      </button>
+
+      <div className={styles.footer}>
+        <button onClick={handleSave} className={styles.saveButton}>
+          Save
+        </button>
+      </div>
     </div>
   );
 }
@@ -105,15 +108,22 @@ export default function SettingsPage() {
 
   switch (status) {
     case "pending":
-      return <p>Preferences Pending</p>;
+      return (
+        <div className={styles.page}>
+          <p className={styles.empty}>Loading…</p>
+        </div>
+      );
     case "error":
-      return <p>Failed to load preferences</p>;
+      return (
+        <div className={styles.page}>
+          <p className={styles.empty}>Failed to load preferences.</p>
+        </div>
+      );
     case "success":
       if (!preferences) {
         return (
-          <div className="mdsnip-container">
-            <h1>Settings</h1>
-            <p>Please login to change settings.</p>
+          <div className={styles.page}>
+            <p className={styles.empty}>Please log in to change settings.</p>
           </div>
         );
       }

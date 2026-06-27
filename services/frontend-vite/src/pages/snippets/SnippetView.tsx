@@ -1,5 +1,5 @@
 import styles from "./snippets-view.module.css";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, Lock } from "lucide-react";
 import { useState } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { type Snippet } from "@/services/snippets.service";
@@ -54,6 +54,8 @@ export default function SnippetView({ snippet }: { snippet: Snippet }) {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [snippetToEdit, setSnippetToEdit] = useState<Snippet>();
+  const [passwordEdit, setPasswordEdit] = useState<string>("");
+  const [passwordDirty, setPasswordDirty] = useState(false);
   const containerRef = useClickOutside(() => setIsDropdownOpen(false));
   const { showDropToast } = useDropToast();
   const deleteSnippet = useDeleteSnippet({
@@ -91,6 +93,14 @@ export default function SnippetView({ snippet }: { snippet: Snippet }) {
 
   const handleEdit = (snippet: Snippet) => {
     setSnippetToEdit(snippet);
+    setPasswordEdit("");
+    setPasswordDirty(false);
+  };
+
+  const closeEdit = () => {
+    setSnippetToEdit(undefined);
+    setPasswordEdit("");
+    setPasswordDirty(false);
   };
 
   const handleEditSave = () => {
@@ -98,15 +108,21 @@ export default function SnippetView({ snippet }: { snippet: Snippet }) {
       console.warn("Nothing edited");
       return;
     }
+    const passwordChange: string | null | undefined = !passwordDirty
+      ? undefined
+      : passwordEdit.trim() === ""
+        ? null
+        : passwordEdit;
     updateSnippet.mutate(
       {
         id: snippetToEdit.id,
         markdown: snippetToEdit?.markdown,
         expirationHours: snippetToEdit?.expirationHours,
+        password: passwordChange,
       },
       {
         onSuccess: () => {
-          setSnippetToEdit(undefined);
+          closeEdit();
         },
       },
     );
@@ -140,23 +156,82 @@ export default function SnippetView({ snippet }: { snippet: Snippet }) {
       <Modal
         isOpen={snippetToEdit ? true : false}
         title="Edit Snippet"
-        onClose={() => setSnippetToEdit(undefined)}
+        onClose={closeEdit}
       >
         {snippetToEdit ? (
-          <textarea
-            className={`mdsnip-textarea ${styles.editTextArea}`}
-            value={snippetToEdit?.markdown}
-            onChange={(e) => {
-              setSnippetToEdit({ ...snippetToEdit, markdown: e.target.value });
-            }}
-          />
-        ) : null}
+          <div className={styles.editForm}>
+            <div className={styles.editField}>
+              <label className={styles.editFieldLabel} htmlFor="edit-markdown">
+                Markdown
+              </label>
+              <textarea
+                id="edit-markdown"
+                className={styles.editTextArea}
+                value={snippetToEdit.markdown}
+                onChange={(e) => {
+                  setSnippetToEdit({
+                    ...snippetToEdit,
+                    markdown: e.target.value,
+                  });
+                }}
+              />
+            </div>
 
-        <br />
-        <br />
-        <button className="mdsnip-button" onClick={handleEditSave}>
-          Save
-        </button>
+            <div className={styles.editField}>
+              <label className={styles.editFieldLabel} htmlFor="edit-password">
+                Password{" "}
+                <span className={styles.editFieldHint}>
+                  {snippet.hasPassword
+                    ? "(leave unchanged or empty to remove)"
+                    : "(optional)"}
+                </span>
+              </label>
+              <input
+                id="edit-password"
+                type="text"
+                name="snippet-passcode"
+                className={`${styles.editInput} ${styles.maskedInput}`}
+                value={passwordEdit}
+                placeholder={
+                  snippet.hasPassword
+                    ? "Set new password…"
+                    : "Leave empty for public"
+                }
+                onChange={(e) => {
+                  setPasswordEdit(e.target.value);
+                  setPasswordDirty(true);
+                }}
+                autoComplete="off"
+                data-1p-ignore="true"
+                data-lpignore="true"
+                data-form-type="other"
+              />
+              {snippet.hasPassword && passwordDirty && passwordEdit === "" && (
+                <p className={styles.editHintWarn}>
+                  Password will be removed on save.
+                </p>
+              )}
+            </div>
+
+            <div className={styles.editActions}>
+              <button
+                type="button"
+                className={styles.editCancelButton}
+                onClick={closeEdit}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={styles.editSaveButton}
+                onClick={handleEditSave}
+                disabled={updateSnippet.isPending}
+              >
+                {updateSnippet.isPending ? "Saving…" : "Save changes"}
+              </button>
+            </div>
+          </div>
+        ) : null}
       </Modal>
       <div className={styles.snippetContainer} key={snippet.shareCode}>
         <div className={styles.snippet} onClick={handleSnippetClick}>
@@ -168,6 +243,14 @@ export default function SnippetView({ snippet }: { snippet: Snippet }) {
               onClick={handleShareLinkClick}
               className={`${styles.text} ${styles.shareLink}`}
             >
+              {snippet.hasPassword && (
+                <Lock
+                  className={styles.lockIcon}
+                  width={11}
+                  height={11}
+                  aria-label="Password protected"
+                />
+              )}
               share/{snippet.shareCode}
             </p>
             <SnippetExpiration snippet={snippet} />

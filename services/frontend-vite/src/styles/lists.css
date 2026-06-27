@@ -1,64 +1,69 @@
-/* Reset default margins and set consistent spacing */
 ul,
 ol,
 dl {
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 var(--space-m) 0;
   padding: 0;
 }
 
-/* Unordered lists */
 ul {
+  list-style: disc outside;
   padding-left: var(--space-l);
 }
 
 ul li {
   position: relative;
-  padding: 0.3rem 0;
+  padding: 0.2rem 0;
 }
 
-/* Ordered lists */
+ul ul {
+  list-style: circle outside;
+}
+
+ul ul ul {
+  list-style: square outside;
+}
+
 ol {
-  counter-reset: item;
+  list-style: decimal outside;
   padding-left: var(--space-l);
 }
 
 ol li {
   position: relative;
-  padding: 0.5rem 0;
-  counter-increment: item;
+  padding: 0.2rem 0;
 }
 
-/* Nested lists */
+ol ol {
+  list-style: lower-alpha outside;
+}
+
 ul ul,
 ol ol,
 ul ol,
 ol ul {
-  margin: 0.5rem 0 0.5rem 1.5rem;
+  margin: var(--space-xs) 0 var(--space-xs) var(--space-m);
 }
 
-/* Definition lists */
 dl {
   padding-left: var(--space-l);
 }
 
 dt {
   font-weight: 600;
-  color: #1f2937; /* Dark gray */
-  margin-top: 1rem;
+  color: var(--font-color-1);
+  margin-top: var(--space-m);
 }
 
 dd {
-  margin: 0.5rem 0 1rem 1rem;
-  color: #4b5563; /* Medium gray */
+  margin: var(--space-xs) 0 var(--space-n) var(--space-m);
+  color: var(--font-color-2);
 }
 
-/* If lists are in a card or container */
 .card ul,
 .card ol {
-  padding-right: 1rem;
+  padding-right: var(--space-m);
 }
 
-/* For description lists in a more compact format */
 .compact-dl dt {
   float: left;
   clear: left;

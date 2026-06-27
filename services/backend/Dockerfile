@@ -5,8 +5,8 @@ ENV FRONTEND_URL=${FRONTEND_URL}
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN yarn install
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 COPY . .
 RUN yarn build

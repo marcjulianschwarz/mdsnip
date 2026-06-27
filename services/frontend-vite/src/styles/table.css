@@ -1,18 +1,25 @@
 table {
   width: fit-content;
   border-collapse: collapse;
-  margin: 0 auto;
+  margin: var(--space-l) auto;
   min-width: 65%;
-  margin-bottom: var(--space-l);
-  margin-top: var(--space-l);
 }
 
 tr {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border-color-1);
+}
+
+thead tr {
+  border-bottom: 1px solid var(--border-color-2);
+}
+
+th {
+  font-weight: 600;
+  color: var(--font-color-1);
 }
 
 td,
 th {
-  padding: 8px;
+  padding: var(--space-s) var(--space-n);
   text-align: left;
 }

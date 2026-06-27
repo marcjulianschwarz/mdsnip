@@ -17,57 +17,59 @@ export default function LoginPage() {
 
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
-    const loginState = await login(username, password);
-    if (loginState === "success") {
+    const result = await login(username, password);
+    if (result === "success") {
       navigate("/");
     } else {
-      setLoginState(loginState);
+      setLoginState(result);
     }
   };
 
   return (
-    <div className="mdsnip-container">
-      <div className={styles.registerPage}>
-        <div className={styles.registerContainer}>
-          <div className={styles.titleContainer}>
-            <img
-              width={100}
-              height={100}
-              src={"/mdsnip.png"}
-              alt="mdsnip logo"
-            />
-            <h1 className={styles.title}>Sign in to your account</h1>
-          </div>
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.formElement}>
-              <label>Username</label>
-              <input ref={usernameRef} required className="mdsnip-input" />
-            </div>
-            <div className={styles.formElement}>
-              <label>Password</label>
-              <input
-                type="password"
-                ref={passwordRef}
-                required
-                className="mdsnip-input"
-              />
-            </div>
-            <div className={styles.btnContainer}>
-              {loginState === "wrong" ? (
-                <p>Wrong username or password</p>
-              ) : null}
-              <button type="submit" className="mdsnip-button">
-                Sign In
-              </button>
-            </div>
-          </form>
-          <p className={styles.already}>
-            Dont have an account?{" "}
-            <Link to={"/register"} className={styles.link}>
-              Create an account
-            </Link>
-          </p>
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <div className={styles.brand}>
+          <h1 className={styles.title}>Welcome back</h1>
+          <p className={styles.subtitle}>Sign in to your account.</p>
         </div>
+
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <label className={styles.field}>
+            <span className={styles.label}>Username</span>
+            <input
+              ref={usernameRef}
+              required
+              autoComplete="username"
+              className={styles.input}
+            />
+          </label>
+
+          <label className={styles.field}>
+            <span className={styles.label}>Password</span>
+            <input
+              type="password"
+              ref={passwordRef}
+              required
+              autoComplete="current-password"
+              className={styles.input}
+            />
+          </label>
+
+          {loginState === "wrong" && (
+            <p className={styles.error}>Wrong username or password.</p>
+          )}
+
+          <button type="submit" className={styles.submit}>
+            Sign in
+          </button>
+        </form>
+
+        <p className={styles.footer}>
+          Don&apos;t have an account?{" "}
+          <Link to="/register" className={styles.link}>
+            Create one
+          </Link>
+        </p>
       </div>
     </div>
   );
